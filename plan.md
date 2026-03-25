@@ -128,13 +128,14 @@ Links to external docs, wikis, API specs, or design docs that skills may need.
 
 **Context Loading:** Every skill begins by reading `agents.md` from the repo root. If it doesn't exist or is missing required sections, the skill stops and tells the developer what's missing.
 
-**Artifact Naming:** All output artifacts are written to a `.ai/` directory at the repo root (gitignored). This keeps them discoverable but out of version control.
+**Artifact Naming:** All output artifacts are written to a `.ai/` directory at the repo root. Artifacts are committed on the fix branch so they travel with the PR and are visible to reviewers. They are cleaned up when the branch is deleted after merge.
 
 ```
 .ai/
 ├── issue-analysis.md
 ├── implementation-plan.md
 ├── plan-review-report.md
+├── implementation-report.md
 └── code-review-report.md
 ```
 
@@ -178,7 +179,7 @@ Links to external docs, wikis, API specs, or design docs that skills may need.
 
 ## Reproducibility
 - **Reproducible:** Yes / No / Not Attempted (with reason)
-- **Environment:** [branch, JDK version, OS, relevant config]
+- **Environment:** [branch, language/runtime version, OS, relevant config]
 - **Steps Executed:**
   1. [step]
   2. [step]
@@ -241,7 +242,7 @@ One-paragraph description of what will be changed and why.
 ### Files to Modify
 | File | Change Description | Rationale |
 |------|--------------------|-----------|
-| path/to/File.java | [what changes] | [why this specific change] |
+| path/to/file | [what changes] | [why this specific change] |
 | ... | ... | ... |
 
 ### Implementation Steps
@@ -255,14 +256,14 @@ Reference existing patterns from the codebase.]
 ## Test Plan
 
 ### New Tests
-| Test Name | Type | Asserts | Location |
-|-----------|------|---------|----------|
-| testXReturnsYWhenZ | Unit | [assertion] | path/to/TestFile.java |
-| testXFailsGracefullyOnInvalidInput | Unit | [assertion] | path/to/TestFile.java |
-| testEndToEndFlowWithFix | Integration | [assertion] | path/to/ITFile.java |
+| Test Name | Type | Asserts | Location | Run Command |
+|-----------|------|---------|----------|-------------|
+| test_x_returns_y_when_z | Unit | [assertion] | path/to/test_file | [command] |
+| test_x_fails_gracefully_on_invalid_input | Unit | [assertion] | path/to/test_file | [command] |
+| test_end_to_end_flow_with_fix | Integration | [assertion] | path/to/test_file | [command] |
 
 ### Existing Tests to Run
-[List of existing test classes/suites that must pass after the change]
+[List of existing test classes/suites that must pass after the change, with the exact commands from agents.md > Testing > Running Tests]
 
 ## Impact Assessment
 - **Affected components:** [list]
@@ -363,7 +364,7 @@ Reference existing patterns from the codebase.]
 
 **Clarification Protocol:** If implementation reveals that the plan is insufficient (e.g., an edge case not considered, an API that doesn't behave as expected), the AI **must stop and ask the developer** rather than improvise a solution.
 
-**Output:** Code changes + tests on the working branch, plus a deviation report if anything changed from the plan.
+**Output:** Code changes + tests on the working branch, plus `.ai/implementation-report.md` documenting what was done and any deviations from the plan.
 
 ```markdown
 # Implementation Report — [Issue #ID]: [Issue Title]
@@ -371,7 +372,7 @@ Reference existing patterns from the codebase.]
 ## Changes Made
 | File | Change Summary |
 |------|---------------|
-| path/to/File.java | [what was changed] |
+| path/to/file | [what was changed] |
 | ... | ... |
 
 ## Tests Written
@@ -410,11 +411,11 @@ Reference existing patterns from the codebase.]
 | Step | Action | Details |
 |------|--------|---------|
 | 1 | **Diff analysis** | Read the full diff. Verify every changed line maps back to the implementation plan. Flag any unplanned changes. |
-| 2 | **Code quality check** | Review for: naming consistency, error handling completeness, resource cleanup (try-with-resources, null checks), logging appropriateness, and adherence to `agents.md > Coding Conventions`. |
+| 2 | **Code quality check** | Review for: naming consistency, error handling completeness, resource cleanup (proper cleanup of resources, null/nil checks), logging appropriateness, and adherence to `agents.md > Coding Conventions`. |
 | 3 | **Test quality check** | Review test code for: meaningful assertions (not just "no exception thrown"), proper setup/teardown, test isolation, and clear naming that describes the scenario. |
 | 4 | **Security scan** | Check for: hardcoded credentials, SQL injection, XSS, improper input validation, insecure deserialization, and overly permissive access controls. |
 | 5 | **Performance check** | Flag any obvious performance concerns: N+1 queries, unbounded loops, missing pagination, large object allocation in hot paths. |
-| 6 | **Documentation check** | Are Javadoc/comments updated where behavior changed? Are any public API changes reflected in documentation? |
+| 6 | **Documentation check** | Are doc comments/inline comments updated where behavior changed? Are any public API changes reflected in documentation? |
 
 **Output:** `.ai/code-review-report.md`
 
@@ -470,7 +471,7 @@ Reference existing patterns from the codebase.]
 | 2 | **Populate PR description** | Fill in each section of the template using content from the `.ai/` artifacts. Include: the issue reference, root cause summary, fix description, test plan, and breaking change notes. |
 | 3 | **Apply labels** | Using `agents.md > Contribution Guidelines > Labels & Categories`, select the appropriate labels (e.g., `bug`, `component/identity`, severity label). |
 | 4 | **Set metadata** | Link the issue, assign reviewers if specified in guidelines, and set the milestone if applicable. |
-| 5 | **Create the PR** | Submit the PR. Include a final summary comment linking to all `.ai/` artifacts for reviewer context. |
+| 5 | **Create the PR** | Submit the PR. Include a final summary comment with key artifact content (root cause, fix summary, test plan, review verdicts) inlined for reviewer context. |
 
 **Output:** A submitted pull request with proper template, labels, and linked artifacts.
 

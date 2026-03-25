@@ -2,6 +2,7 @@
 name: send-pr
 description: Assemble and submit a pull request with proper metadata, description, and labels.
 user-invocable: true
+argument-hint: "[target-branch (optional)]"
 ---
 
 # /send-pr — Pull Request Submission
@@ -15,10 +16,12 @@ You are an AI assistant assembling and submitting a pull request for a completed
 3. Read `.ai/issue-analysis.md` for the issue details.
 4. Read `.ai/implementation-plan.md` for the fix description.
 5. Read `.ai/plan-review-report.md` for any implementation notes.
+6. Read `.ai/implementation-report.md` if it exists, for deviation details.
 
-## Step 1: Verify Branch
+## Step 1: Verify Branch and Remote
 
-Ensure changes are committed on a properly named branch per `agents.md > Branch Naming`.
+1. Ensure changes are committed on a properly named branch per `agents.md > Branch Naming`.
+2. Verify the branch is pushed to the remote. If not, inform the developer and ask for confirmation to push with `git push -u origin <branch-name>`.
 
 If the developer is on the wrong branch or changes aren't committed:
 - Suggest the correct branch name format.
@@ -67,25 +70,33 @@ Use `gh pr create` to submit the PR with the populated template, labels, and met
 
 ## Step 7: Post-PR Summary
 
-After the PR is created, add a comment on the PR linking to all `.ai/` artifacts for reviewer context:
+After the PR is created, add a comment on the PR with the key artifact content inlined for reviewer context:
 
 ```markdown
 ## AI-Assisted Bug Fix Context
 
-This PR was created with AI assistance. The following artifacts document the full analysis and decision trail:
+This PR was created with AI assistance. Below is a summary of the analysis and decision trail.
 
-- **Issue Analysis:** Summary of bug classification, reproduction, and root cause hypothesis
-- **Implementation Plan:** Detailed plan including files modified, code approach, and test plan
-- **Plan Review:** Independent validation of the implementation plan
-- **Code Review:** Automated code review findings
+### Root Cause
+[Inline the root cause from issue-analysis.md and implementation-plan.md]
 
-All artifacts are available in the `.ai/` directory of this branch.
+### Fix Summary
+[Inline the summary and key implementation details from implementation-plan.md]
+
+### Test Plan
+[Inline the test plan table from implementation-plan.md]
+
+### Plan Review Verdict
+[Inline the verdict and any key findings from plan-review-report.md]
+
+### Code Review Verdict
+[Inline the verdict and any key findings from code-review-report.md]
 ```
 
 ## Important Rules
 
 - **Never push without confirmation.** Always show the developer the PR details and wait for approval.
 - **Follow the repo's conventions.** Use the exact PR template, label scheme, and branch naming from `agents.md`.
-- **Link everything.** The PR must reference the issue, and the artifacts must be discoverable from the PR.
+- **Link everything.** The PR must reference the issue, and the artifact summaries must be discoverable from the PR.
 - If the PR template is not found, use a sensible default but warn the developer about the missing template.
 - After the PR is created, provide the PR URL to the developer and remind them to review it before requesting reviews.
