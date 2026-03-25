@@ -6,6 +6,15 @@
 
   Sections marked [REQUIRED] are read by skills and will block execution if missing.
   Sections marked [OPTIONAL] improve quality but skills will still run without them.
+
+  Completeness guidance:
+  - REQUIRED sections must have substantive content, not just placeholders.
+  - Architecture must include the module map table with all top-level modules listed.
+  - Feature Inventory must list at least the major features with entry points.
+  - Deployment must include working build and run commands.
+  - Testing must specify the framework, naming conventions, and runnable test commands.
+  - Coding Conventions must cover at minimum style/formatting and commit message format.
+  - Contribution Guidelines must describe the PR process and available labels.
 -->
 
 ## Product Overview
@@ -32,6 +41,18 @@
 ### Key Abstractions & Patterns
 <!-- Used by: /plan-fix (to align fixes with existing patterns) -->
 <!-- Design patterns used, naming conventions, component lifecycle, extension points. -->
+
+
+
+### Error Handling Patterns [OPTIONAL]
+<!-- Used by: /implement, /code-review -->
+<!-- How errors should be handled: custom exception hierarchy, error codes, error propagation patterns. -->
+
+
+
+### Logging Conventions [OPTIONAL]
+<!-- Used by: /implement, /code-review -->
+<!-- Logging framework, log levels usage, structured logging patterns, what should/should not be logged. -->
 
 
 
@@ -62,6 +83,23 @@
 
 ```
 
+### Build Scope [OPTIONAL]
+<!-- Used by: /reproduce, /implement -->
+<!-- Module-scoped build commands for building only affected modules instead of the entire product.
+     Map modules to their specific build commands and their downstream dependents. -->
+
+| Module | Build Command | Dependents |
+|--------|--------------|------------|
+| | | |
+
+### Timeouts [OPTIONAL]
+<!-- Used by: /reproduce, /implement -->
+<!-- Configurable timeouts for long-running operations. -->
+
+- **Build timeout:** [default: 30 minutes]
+- **Product startup timeout:** [default: 5 minutes]
+- **Reproduction attempt timeout:** [default: 10 minutes]
+
 ### Configuration [OPTIONAL]
 <!-- Key config files, environment variables, and default ports. -->
 
@@ -69,6 +107,13 @@
 
 ### Health Check
 <!-- How to verify the product started successfully: URLs, CLI commands, log markers. -->
+
+
+
+### Database & Migrations [OPTIONAL]
+<!-- Used by: /reproduce, /implement -->
+<!-- Database engine, schema location, migration tool (Flyway, Liquibase, etc.),
+     how to set up a local dev database, migration naming conventions. -->
 
 
 
@@ -129,6 +174,13 @@
 
 
 
+### Base Branch [OPTIONAL]
+<!-- Used by: /code-review, /send-pr -->
+<!-- The default target branch for PRs (e.g., main, master, develop).
+     If different branches are used for different types of changes, document the rules here. -->
+
+
+
 ### PR Template Location [OPTIONAL]
 <!-- Path to PR template, e.g., .github/PULL_REQUEST_TEMPLATE.md -->
 
@@ -140,6 +192,13 @@
 | Label | When to use |
 |-------|-------------|
 | | |
+
+## CI/CD Pipeline [OPTIONAL]
+<!-- Used by: /code-review -->
+<!-- Which CI system is used (Jenkins, GitHub Actions, etc.),
+     required CI checks for PRs, how to run CI checks locally. -->
+
+
 
 ## References [OPTIONAL]
 <!-- Links to external docs, wikis, API specs, design docs, or runbooks. -->
