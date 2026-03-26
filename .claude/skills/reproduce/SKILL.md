@@ -107,4 +107,8 @@ and reproduction results.
 - **Never guess.** If you encounter ambiguity you cannot resolve from available documents, stop and ask the developer.
 - **Artifacts over memory.** The output artifact must be complete enough for a different agent to pick up where you left off.
 - **Minimal scope.** Operate on a single issue at a time.
-- After writing the artifact, inform the developer that they should review `issue-analysis.md` and confirm the analysis before proceeding to `/plan-fix`.
+- After writing the artifact, display the following message to the user:
+
+> ✅ `issue-analysis.md` has been written to `<ai_folder_path>`.
+>
+> **Next step:** Use **Claude Plan Mode** to analyze the issue analysis and create the development plan and implementation strategy.
